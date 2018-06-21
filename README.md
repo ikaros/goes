@@ -26,7 +26,7 @@ $ go run main.go
 ## Todo
 
 - [x] First draft that avoid multiple switch
-- [ ] Stop using pointers as an arguments and return values for the `Call` function: use purely immutables aggregates
+- [ ] Stop using pointers as an arguments and return values for the `Call` function: use purely immutables aggregates. (for the moment they are actually immutables, but you need to pass a pointer to persis in `gorm`, you can save an interface (which is not a concrete type).
 
 ## Glossary
 
@@ -36,9 +36,9 @@ $ go run main.go
 
 * **Aggregates** represent the current state of the application. They are like models.
 
-* **Calculator** to update the state of the application. This is the `Apply` method of the `Aggregate` interface.
+* **Calculators** to update the state of the application. This is the `Apply` method of the `Aggregate` interface.
 
-** **Reactor** to trigger side effects as events happen. They are registered with the `On` Function.
+* **Reactors** to trigger side effects as events happen. They are registered with the `On` Function.
 
 
 ## Resources
