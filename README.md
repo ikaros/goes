@@ -40,6 +40,8 @@ $ go run main.go
 
 * **Reactors** to trigger side effects as events happen. They are registered with the `On` Function.
 
+* **Event Store** PostgresSQL
+
 
 ## Resources
 

@@ -13,6 +13,7 @@ type registryReactors struct {
 	Async []Reactor
 }
 
+// On is used to register events
 func On(event EventInterface, sync []Reactor, async []Reactor) {
 	eventType := event.AggregateType() +
 		"." + event.Action() +

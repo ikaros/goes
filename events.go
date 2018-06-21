@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm/dialects/postgres"
-	uuid "github.com/satori/go.uuid"
 )
 
 var eventRegistry = map[string]reflect.Type{}
@@ -47,7 +47,7 @@ type EventDB struct {
 
 func buildBaseEvent(evi EventInterface, metadata Metadata, aggregateID string) Event {
 	event := Event{}
-	uuidV4, _ := uuid.NewV4()
+	uuidV4, _ := uuid.NewRandom()
 
 	if metadata == nil {
 		metadata = Metadata{}
@@ -65,6 +65,24 @@ func buildBaseEvent(evi EventInterface, metadata Metadata, aggregateID string) E
 	return event
 }
 
+// Events returns **All** the persisted events
+func Events() ([]Event, error) {
+	events := []EventDB{}
+	ret := []Event{}
+
+	DB.Order("timestamp").Find(&events)
+	for _, event := range events {
+		ev, err := event.Decode()
+		if err != nil {
+			return []Event{}, err
+		}
+		ret = append(ret, ev)
+	}
+	return ret, nil
+}
+
+// RegisterEvents should be used a the beginning of your application to register all
+// your events types
 func RegisterEvents(events ...EventInterface) {
 
 	for _, event := range events {
@@ -76,6 +94,7 @@ func RegisterEvents(events ...EventInterface) {
 	}
 }
 
+// Encode returns a resiralized version of the event, ready to go to the Database
 func (event Event) Encode() (EventDB, error) {
 	ret := EventDB{}
 	var err error
@@ -101,6 +120,7 @@ func (event Event) Encode() (EventDB, error) {
 	return ret, nil
 }
 
+// Decode return a deserialized event, ready to user
 func (event EventDB) Decode() (Event, error) {
 	// deserialize json
 	var err error
@@ -120,10 +140,9 @@ func (event EventDB) Decode() (Event, error) {
 	}
 
 	n := dataValue.NumField()
-	for i := 0; i < n; i += 1 {
+	for i := 0; i < n; i++ {
 		field := dataValue.Type().Field(i)
 		jsonName := field.Tag.Get("json")
-		//fmt.Println(jsonName)
 		if jsonName == "" {
 			jsonName = field.Name
 		}
@@ -150,6 +169,7 @@ func (event EventDB) Decode() (Event, error) {
 	return ret, nil
 }
 
+// TableName is used by gorm to create the table
 func (EventDB) TableName() string {
 	return "events"
 }

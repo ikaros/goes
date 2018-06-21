@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "064e2069ce9c359c118179501254f67d7d37ba24"
+  version = "0.2"
+
+[[projects]]
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
@@ -26,15 +32,9 @@
   ]
   revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
-[[projects]]
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
-  version = "v1.2.0"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ac26a64276884783a857c50beb39418bc8366d2c5b17b069c29f78c9ab31fa8e"
+  inputs-digest = "e484c469092370e1e91f6583891184d97cf8c215e23237f3cedf9b2b1124e3f3"
   solver-name = "gps-cdcl"
   solver-version = 1

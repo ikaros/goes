@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+// NilAggregate is used by the `Call` function to return a kind of nil value and not
+// propagate errors
 type NilAggregate struct{}
 
 func (NilAggregate) Apply(event Event) Aggregate {
@@ -17,9 +19,9 @@ func (NilAggregate) GetID() string {
 type Aggregate interface {
 	Apply(Event) Aggregate
 	GetID() string
-	//	UpdateVersion() Aggregate
 }
 
+// BaseAggregate should be embedded in all your aggregates
 type BaseAggregate struct {
 	ID        string     `json:"id"`
 	CreatedAt time.Time  `json:"created_at"`
@@ -32,6 +34,7 @@ func (a BaseAggregate) GetID() string {
 	return a.ID
 }
 
+// Events returns all the persisted events associated with the aggregate
 func (a BaseAggregate) Events() ([]Event, error) {
 	events := []EventDB{}
 	ret := []Event{}
