@@ -36,9 +36,9 @@ $ go run main.go
 
 * **Aggregates** represent the current state of the application. They are like models.
 
-* **Calculators** to update the state of the application. This is the `Apply` method of the `Aggregate` interface. There is `Sync Reactors` which are called synchronously in the `Call` funciton, and can fail the transaction if an error occur, and `Async Reactor` which are called asynchronously, and are not checked for error (fire and forget).
+* **Calculators** to update the state of the application. This is the `Apply` method of the `Aggregate` interface. 
 
-* **Reactors** to trigger side effects as events happen. They are registered with the `On` Function.
+* **Reactors** to trigger side effects as events happen. They are registered with the `On` Function. There is `Sync Reactors` which are called synchronously in the `Call` funciton, and can fail the transaction if an error occur, and `Async Reactor` which are called asynchronously, and are not checked for error (fire and forget). They are not triggered by the `Apply` method but in the `Call` functin, thus they **are not** triggered when you replay events. You can triggers them when replaying by using `Dispatch(event)`.
 
 * **Event Store** PostgresSQL
 
